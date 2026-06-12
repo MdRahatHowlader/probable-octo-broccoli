@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইনস্টিটিউট ফি ম্যানেজার ও অনলাইন ট্র্যাকার</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --primary: #2c3e50; --secondary: #3498db; --success: #2ecc71; --danger: #e74c3c; --dark: #1a252f; --light: #ecf0f1; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f5f7fa; padding: 15px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Auth Bar Style */
+        .auth-bar { background: var(--primary); padding: 12px 20px; border-radius: 10px; margin-bottom: 20px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .auth-btn { padding: 8px 18px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; color: white; display: flex; align-items: center; gap: 8px; }
+        .login-btn { background-color: var(--success); }
+        .login-btn:hover { background-color: #27ae60; }
+        .logout-btn { background-color: var(--danger); }
+        .logout-btn:hover { background-color: #c0392b; }
+
+        /* Rest of your beautiful CSS UI Styles */
+        .header { text-align: center; margin-bottom: 25px; color: var(--primary); }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width: 768px) { .grid { grid-template-columns: 350px 1fr; } }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--primary); }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; background: var(--secondary); transition: 0.3s; }
+        .btn:hover { opacity: 0.9; }
+        
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
+        th { background-color: var(--primary); color: white; }
+        .status-paid { color: var(--success); font-weight: bold; }
+        .status-due { color: var(--danger); font-weight: bold; }
+        .action-btns { display: flex; gap: 5px; }
+        .action-btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+        .btn-pay { background: var(--success); }
+        .btn-del { background: var(--danger); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="auth-bar">
+        <span id="userStatus"><i class="fas fa-wifi"></i> ডাটাবেজ কানেক্ট হচ্ছে...</span>
+        <button id="authBtn" class="auth-btn login-btn" onclick="toggleAuth()">
+            <i class="fab fa-google"></i> Google লগইন
+        </button>
+    </div>
+
+    <div class="header">
+        <h2><i class="fas fa-graduation-cap"></i> ইনস্টিটিউট স্টুডেন্ট ফি ট্র্যাকার v9.0</h2>
+        <p>অনলাইন ডাটাবেজ ও স্বয়ংক্রিয় ক্লাউড সিঙ্ক সমৃদ্ধ</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3 style="margin-bottom:15px; color: var(--primary);"><i class="fas fa-user-plus"></i> নতুন স্টুডেন্ট প্রোফাইল</h3>
+            <form id="studentForm" onsubmit="addStudent(event)">
+                <div class="form-group">
+                    <label>ছাত্র/ছাত্রীর নাম:</label>
+                    <input type="text" id="studentName" class="form-control" placeholder="যেমন: রহিম আহমেদ" required>
+                </div>
+                <div class="form-group">
+                    <label>ভর্তির মাস:</label>
+                    <select id="admissionMonth" class="form-control">
+                        <option value="0">জানুয়ারি</option><option value="1">ফেব্রুয়ারি</option>
+                        <option value="2">মার্চ</option><option value="3">এপ্রিল</option>
+                        <option value="4">মে</option><option value="5">জুন</option>
+                        <option value="6">জুলাই</option><option value="7">আগস্ট</option>
+                        <option value="8">সেপ্টেম্বর</option><option value="9">অক্টোবর</option>
+                        <option value="10">নভেম্বর</option><option value="11">ডিসেম্বর</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>মাসিক বেতন (টাকা):</label>
+                    <input type="number" id="monthlyFee" class="form-control" placeholder="যেমন: ৫০০" required>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> প্রোফাইল তৈরি করুন</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>নাম</th>
+                            <th>ভর্তির মাস</th>
+                            <th>চলতি মাস ফি</th>
+                            <th>মোট বকেয়া</th>
+                            <th>অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // আপনার স্ক্রিনশট থেকে নেওয়া আসল Firebase credentials
+  const firebaseConfig = {
+    apiKey: "AIzaSyB1Qrkx9BYvG9dYzRSA_lMmuThIuev9FoI",
+    authDomain: "students-fee-management-fb33a.firebaseapp.com",
+    projectId: "students-fee-management-fb33a",
+    storageBucket: "students-fee-management-fb33a.firebasestorage.app",
+    messagingSenderId: "313721054346",
+    appId: "1:313721054346:web:80695cb1e464667e14f973",
+    measurementId: "G-EF03X971CJ"
+  };
+
+  // Firebase ইনিশিয়ালাইজেশন
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  let studentProfiles = JSON.parse(localStorage.getItem('admissionTrackStudents')) || [];
+  const monthsArr = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+
+  // গুগল দিয়ে লগইন/লগআউট হ্যান্ডলার
+  function toggleAuth() {
+    const user = auth.currentUser;
+    if (user) {
+      auth.signOut().then(() => { location.reload(); });
+    } else {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(err => console.error("Login Error:", err));
+    }
+  }
+
+  // লগইন স্টেট মনিটর এবং রিয়েল-টাইম ক্লাউড সিঙ্ক
+  auth.onAuthStateChanged(user => {
+    const statusText = document.getElementById('userStatus');
+    const authBtn = document.getElementById('authBtn');
+    
+    if (user) {
+      statusText.innerHTML = `🟢 লগইন: <strong>${user.displayName}</strong> (ক্লাউডে অটো-সিঙ্ক অন)`;
+      authBtn.innerText = "লগআউট";
+      authBtn.className = "auth-btn logout-btn";
+      
+      // ফায়ারবেস থেকে ডেটা অটো-ডাউনলোড
+      db.collection("fee_manager_users").doc(user.uid).onSnapshot(doc => {
+        if (doc.exists) {
+          studentProfiles = doc.data().students || [];
+          localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
+          renderMainTable();
+        }
+      });
+    } else {
+      statusText.innerHTML = "🔴 অফলাইন মোড (ডেটা অনলাইনে সেভ হচ্ছে না, লগইন করুন)";
+      authBtn.innerText = "Google লগইন";
+      authBtn.className = "auth-btn login-btn";
+      renderMainTable();
+    }
+  });
+
+  // ক্লাউডে অটো-সেভ ফাংশন
+  function autoSaveToCloud() {
+    const user = auth.currentUser;
+    if (user) {
+      db.collection("fee_manager_users").doc(user.uid).set({
+        students: studentProfiles,
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => console.log("Cloud synced!"))
+        .catch(err => console.error("Sync Error:", err));
+    }
+  }
+
+  // নতুন স্টুডেন্ট যোগ করা
+  function addStudent(e) {
+    e.preventDefault();
+    const name = document.getElementById('studentName').value;
+    const startMonth = parseInt(document.getElementById('admissionMonth').value);
+    const fee = parseFloat(document.getElementById('monthlyFee').value);
+    
+    const newStudent = {
+      id: Date.now(),
+      name: name,
+      startMonth: startMonth,
+      monthlyFee: fee,
+      paidMonths: []
+    };
+
+    studentProfiles.push(newStudent);
+    localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
+    document.getElementById('studentForm').reset();
+    renderMainTable();
+    autoSaveToCloud();
+  }
+
+  // বেতন জমা নেওয়া
+  function payCurrentMonth(id, monthIndex) {
+    const student = studentProfiles.find(s => s.id === id);
+    if (student && !student.paidMonths.includes(monthIndex)) {
+      student.paidMonths.push(monthIndex);
+      localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
+      renderMainTable();
+      autoSaveToCloud();
+    }
+  }
+
+  // স্টুডেন্ট ডিলিট করা
+  function deleteStudent(id) {
+    if(confirm("আপনি কি নিশ্চিতভাবে এই প্রোফাইলটি ডিলিট করতে চান?")) {
+        studentProfiles = studentProfiles.filter(s => s.id !== id);
+        localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
+        renderMainTable();
+        autoSaveToCloud();
+    }
+  }
+
+  // মেইন টেবিল রেন্ডার এবং বকেয়া হিসাব করার লজিক
+  function renderMainTable() {
+    const tbody = document.getElementById('studentTableBody');
+    tbody.innerHTML = '';
+    const currentMonth = new Date().getMonth();
+
+    studentProfiles.forEach(student => {
+      let dueAmount = 0;
+      // ভর্তি মাস থেকে চলতি মাস পর্যন্ত বকেয়া হিসাব করা
+      for (let m = student.startMonth; m <= currentMonth; m++) {
+        if (!student.paidMonths.includes(m)) {
+          dueAmount += student.monthlyFee;
+        }
+      }
+
+      const isCurrentPaid = student.paidMonths.includes(currentMonth);
+      const currentStatusHTML = isCurrentPaid 
+        ? `<span class="status-paid"><i class="fas fa-check-circle"></i> পরিশোধিত</span>`
+        : `<button class="action-btn btn-pay" onclick="payCurrentMonth(${student.id}, ${currentMonth})"><i class="fas fa-money-bill-wave"></i> জমা দিন</button>`;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${student.name}</strong></td>
+        <td>${monthsArr[student.startMonth]}</td>
+        <td>${currentStatusHTML}</td>
+        <td class="${dueAmount > 0 ? 'status-due' : 'status-paid'}">${dueAmount} টাকা</td>
+        <td>
+            <div class="action-btns">
+                <button class="action-btn btn-del" onclick="deleteStudent(${student.id})"><i class="fas fa-trash"></i></button>
+            </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // প্রথমবার পেজ লোড হলে টেবিল দেখানো
+  renderMainTable();
+</script>
+
+</body>
+</html>
