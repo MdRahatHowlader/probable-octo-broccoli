@@ -3,43 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ইনস্টিটিউট ফি ম্যানেজার ও অনলাইন ট্র্যাকার</title>
+    <title>ইনস্টিটিউট ফি ম্যানেজার ও অনলাইন ট্র্যাকার v9.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --primary: #2c3e50; --secondary: #3498db; --success: #2ecc71; --danger: #e74c3c; --dark: #1a252f; --light: #ecf0f1; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f5f7fa; padding: 15px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        /* Auth Bar Style */
-        .auth-bar { background: var(--primary); padding: 12px 20px; border-radius: 10px; margin-bottom: 20px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .auth-btn { padding: 8px 18px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; color: white; display: flex; align-items: center; gap: 8px; }
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+            --dark: #1a252f;
+            --light: #ecf0f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 🔐 ক্লাউড লগইন বার স্টাইল */
+        .auth-bar {
+            background: var(--primary);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .auth-btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .login-btn { background-color: var(--success); }
         .login-btn:hover { background-color: #27ae60; }
         .logout-btn { background-color: var(--danger); }
         .logout-btn:hover { background-color: #c0392b; }
 
-        /* Rest of your beautiful CSS UI Styles */
-        .header { text-align: center; margin-bottom: 25px; color: var(--primary); }
-        .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media(min-width: 768px) { .grid { grid-template-columns: 350px 1fr; } }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--primary); }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; background: var(--secondary); transition: 0.3s; }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media(min-width: 768px) {
+            .grid { grid-template-columns: 350px 1fr; }
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: var(--secondary);
+            transition: 0.3s;
+        }
+
         .btn:hover { opacity: 0.9; }
-        
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
-        th { background-color: var(--primary); color: white; }
+
+        /* সার্চ ও ফিল্টার এরিয়া */
+        .controls-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* টেবিল ইউজার ইন্টারফেস */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
         .status-paid { color: var(--success); font-weight: bold; }
         .status-due { color: var(--danger); font-weight: bold; }
-        .action-btns { display: flex; gap: 5px; }
-        .action-btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+
         .btn-pay { background: var(--success); }
+        .btn-statement { background: var(--secondary); }
         .btn-del { background: var(--danger); }
+
+        /* ব্যাকআপ সেকশন */
+        .backup-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-backup { background: #95a5a6; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+
+        /* মোডাল উইন্ডো স্টাইল (রশিদ) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white; padding: 25px; border-radius: 12px;
+            max-width: 500px; width: 90%; position: relative;
+        }
+
+        .close-modal {
+            position: absolute; top: 10px; right: 15px;
+            font-size: 24px; cursor: pointer; color: #aaa;
+        }
+
+        .statement-receipt {
+            border: 2px dashed #bdc3c7; padding: 15px; margin-top: 15px; background: #fafafa;
+        }
     </style>
 </head>
 <body>
@@ -54,12 +239,12 @@
 
     <div class="header">
         <h2><i class="fas fa-graduation-cap"></i> ইনস্টিটিউট স্টুডেন্ট ফি ট্র্যাকার v9.0</h2>
-        <p>অনলাইন ডাটাবেজ ও স্বয়ংক্রিয় ক্লাউড সিঙ্ক সমৃদ্ধ</p>
+        <p>স্মার্ট ড্যাশবোর্ড, ইনস্ট্যান্ট স্টেটমেন্ট ও ক্লাউড অটো-সিঙ্ক</p>
     </div>
 
     <div class="grid">
         <div class="card">
-            <h3 style="margin-bottom:15px; color: var(--primary);"><i class="fas fa-user-plus"></i> নতুন স্টুডেন্ট প্রোফাইল</h3>
+            <h3 style="margin-bottom:15px; color: var(--primary);"><i class="fas fa-user-plus"></i> নতুন স্টুডেন্ট</h3>
             <form id="studentForm" onsubmit="addStudent(event)">
                 <div class="form-group">
                     <label>ছাত্র/ছাত্রীর নাম:</label>
@@ -82,9 +267,22 @@
                 </div>
                 <button type="submit" class="btn"><i class="fas fa-save"></i> প্রোফাইল তৈরি করুন</button>
             </form>
+
+            <div class="backup-section">
+                <button class="btn-backup" onclick="exportData()"><i class="fas fa-download"></i> ব্যাকআপ নামান</button>
+                <button class="btn-backup" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> রিস্টোর</button>
+                <input type="file" id="importFile" style="display:none" onchange="importData(event)">
+            </div>
         </div>
 
         <div class="card">
+            <div class="controls-area">
+                <input type="text" id="searchBar" class="form-control search-box" placeholder="🔍 নাম দিয়ে খুঁজুন..." oninput="renderMainTable()">
+                <button class="filter-btn active" id="filterAll" onclick="setFilter('all')">সবাই</button>
+                <button class="filter-btn" id="filterDue" onclick="setFilter('due')">বকেয়া আছে</button>
+                <button class="filter-btn" id="filterPaid" onclick="setFilter('paid')">পরিশোধিত</button>
+            </div>
+
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -104,12 +302,21 @@
     </div>
 </div>
 
+<div id="statementModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h3><i class="fas fa-receipt"></i> ডিজিটাল স্টেটমেন্ট রিসিট</h3>
+        <div id="statementContent" class="statement-receipt"></div>
+        <button class="btn" style="margin-top:15px; background:var(--success);" onclick="shareStatement()"><i class="fas fa-share-alt"></i> বন্ধুদের সাথে শেয়ার করুন</button>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // আপনার স্ক্রিনশট থেকে নেওয়া আসল Firebase credentials
+  // আপনার প্রজেক্টের আসল ফায়ারবেস চাবি
   const firebaseConfig = {
     apiKey: "AIzaSyB1Qrkx9BYvG9dYzRSA_lMmuThIuev9FoI",
     authDomain: "students-fee-management-fb33a.firebaseapp.com",
@@ -120,26 +327,34 @@
     measurementId: "G-EF03X971CJ"
   };
 
-  // Firebase ইনিশিয়ালাইজেশন
+  // ফায়ারবেস ক্লাউড ইনিশিয়ালাইজেশন
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
 
   let studentProfiles = JSON.parse(localStorage.getItem('admissionTrackStudents')) || [];
+  let currentFilter = 'all';
   const monthsArr = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
 
-  // গুগল দিয়ে লগইন/লগআউট হ্যান্ডলার
+  // 🔐 নিরাপদ গুগল রিডাইরেক্ট লগইন মেকানিজম (যা গিটহাবে ১০০% কাজ করবে)
   function toggleAuth() {
     const user = auth.currentUser;
     if (user) {
       auth.signOut().then(() => { location.reload(); });
     } else {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch(err => console.error("Login Error:", err));
+      auth.signInWithRedirect(provider).catch(err => console.error("लॉगइन त्रुटि:", err));
     }
   }
 
-  // লগইন স্টেট মনিটর এবং রিয়েল-টাইম ক্লাউড সিঙ্ক
+  // ব্রাউজার ফিরে আসার পর লগইন রেজাল্ট হ্যান্ডেল করা
+  auth.getRedirectResult().then((result) => {
+    if (result && result.user) {
+      console.log("Redirect Login Success:", result.user.displayName);
+    }
+  }).catch(err => console.error("Redirect Error:", err));
+
+  // লগইন স্ট্যাটাস অনুযায়ী লাইভ সিঙ্ক করা
   auth.onAuthStateChanged(user => {
     const statusText = document.getElementById('userStatus');
     const authBtn = document.getElementById('authBtn');
@@ -149,7 +364,7 @@
       authBtn.innerText = "লগআউট";
       authBtn.className = "auth-btn logout-btn";
       
-      // ফায়ারবেস থেকে ডেটা অটো-ডাউনলোড
+      // ফায়ারবেস ক্লাউড থেকে ডাটা লাইভ নামানো
       db.collection("fee_manager_users").doc(user.uid).onSnapshot(doc => {
         if (doc.exists) {
           studentProfiles = doc.data().students || [];
@@ -158,26 +373,26 @@
         }
       });
     } else {
-      statusText.innerHTML = "🔴 অফলাইন মোড (ডেটা অনলাইনে সেভ হচ্ছে না, লগইন করুন)";
+      statusText.innerHTML = "🔴 অফলাইন মোড (ডেটা শুধু এই ব্রাউজারে থাকবে, লগইন করুন)";
       authBtn.innerText = "Google লগইন";
       authBtn.className = "auth-btn login-btn";
       renderMainTable();
     }
   });
 
-  // ক্লাউডে অটো-সেভ ফাংশন
+  // ক্লাউডে ডাটা সিঙ্ক করার অটোমেটিক ফাংশন
   function autoSaveToCloud() {
     const user = auth.currentUser;
     if (user) {
       db.collection("fee_manager_users").doc(user.uid).set({
         students: studentProfiles,
         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => console.log("Cloud synced!"))
+      }).then(() => console.log("Cloud Auto-Synced!"))
         .catch(err => console.error("Sync Error:", err));
     }
   }
 
-  // নতুন স্টুডেন্ট যোগ করা
+  // নতুন স্টুডেন্ট ডাটাবেজে নেওয়া
   function addStudent(e) {
     e.preventDefault();
     const name = document.getElementById('studentName').value;
@@ -199,7 +414,7 @@
     autoSaveToCloud();
   }
 
-  // বেতন জমা নেওয়া
+  // চলতি মাসের ফি জমা করার লজিক
   function payCurrentMonth(id, monthIndex) {
     const student = studentProfiles.find(s => s.id === id);
     if (student && !student.paidMonths.includes(monthIndex)) {
@@ -210,7 +425,7 @@
     }
   }
 
-  // স্টুডেন্ট ডিলিট করা
+  // প্রোফাইল রিমুভ করা
   function deleteStudent(id) {
     if(confirm("আপনি কি নিশ্চিতভাবে এই প্রোফাইলটি ডিলিট করতে চান?")) {
         studentProfiles = studentProfiles.filter(s => s.id !== id);
@@ -220,22 +435,41 @@
     }
   }
 
-  // মেইন টেবিল রেন্ডার এবং বকেয়া হিসাব করার লজিক
+  // ফিল্টার সেট করা
+  function setFilter(type) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    if(type === 'all') document.getElementById('filterAll').classList.add('active');
+    if(type === 'due') document.getElementById('filterDue').classList.add('active');
+    if(type === 'paid') document.getElementById('filterPaid').classList.add('active');
+    renderMainTable();
+  }
+
+  // মেইন ড্যাশবোর্ড রেন্ডার এবং বকেয়া হিসাব করার এডভান্সড অ্যালগরিদম
   function renderMainTable() {
     const tbody = document.getElementById('studentTableBody');
     tbody.innerHTML = '';
     const currentMonth = new Date().getMonth();
+    const searchQuery = document.getElementById('searchBar').value.toLowerCase();
 
     studentProfiles.forEach(student => {
+      // সার্চ ফিল্টার চেক
+      if (searchQuery && !student.name.toLowerCase().includes(searchQuery)) return;
+
       let dueAmount = 0;
-      // ভর্তি মাস থেকে চলতি মাস পর্যন্ত বকেয়া হিসাব করা
+      let totalDueMonths = [];
       for (let m = student.startMonth; m <= currentMonth; m++) {
         if (!student.paidMonths.includes(m)) {
           dueAmount += student.monthlyFee;
+          totalDueMonths.push(monthsArr[m]);
         }
       }
 
+      // ক্যাটাগরি ফিল্টার চেক (সবাই/বকেয়া/পরিশোধিত)
       const isCurrentPaid = student.paidMonths.includes(currentMonth);
+      if (currentFilter === 'due' && dueAmount === 0) return;
+      if (currentFilter === 'paid' && dueAmount > 0) return;
+
       const currentStatusHTML = isCurrentPaid 
         ? `<span class="status-paid"><i class="fas fa-check-circle"></i> পরিশোধিত</span>`
         : `<button class="action-btn btn-pay" onclick="payCurrentMonth(${student.id}, ${currentMonth})"><i class="fas fa-money-bill-wave"></i> জমা দিন</button>`;
@@ -248,6 +482,7 @@
         <td class="${dueAmount > 0 ? 'status-due' : 'status-paid'}">${dueAmount} টাকা</td>
         <td>
             <div class="action-btns">
+                <button class="action-btn btn-statement" onclick="openStatement(${student.id}, ${dueAmount}, '${totalDueMonths.join(', ')}')"><i class="fas fa-file-invoice"></i></button>
                 <button class="action-btn btn-del" onclick="deleteStudent(${student.id})"><i class="fas fa-trash"></i></button>
             </div>
         </td>
@@ -256,7 +491,72 @@
     });
   }
 
-  // প্রথমবার পেজ লোড হলে টেবিল দেখানো
+  // 📄 ডিজিটাল রিসিট ও স্টেটমেন্ট জেনারেটর
+  let lastStatementText = "";
+  function openStatement(id, dueAmount, dueMonthsText) {
+    const student = studentProfiles.find(s => s.id === id);
+    if(!student) return;
+
+    let paidMonthsText = student.paidMonths.map(m => monthsArr[m]).join(', ') || "কোনো মাস নয়";
+    
+    lastStatementText = `📝 *ফি স্টেটমেন্ট রিসিট* 📝\n\n` +
+                        `👤 ছাত্রের নাম: ${student.name}\n` +
+                        `💵 মাসিক বেতন: ${student.monthlyFee} টাকা\n` +
+                        `✅ পরিশোধিত মাসসমূহ: ${paidMonthsText}\n` +
+                        `⚠️ মোট বকেয়া টাকা: ${dueAmount} টাকা\n` +
+                        `📅 বকেয়া মাসসমূহ: ${dueMonthsText || 'নেই'}\n\n` +
+                        `_ধন্যবাদ, ট্র্যাকার অ্যাপ দ্বারা জেনারেটকৃত_`;
+
+    document.getElementById('statementContent').innerHTML = `
+        <p><strong>ছাত্রের নাম:</strong> ${student.name}</p>
+        <p><strong>মাসিক বেতন:</strong> ${student.monthlyFee} টাকা</p>
+        <p style="color:var(--success)"><strong>পরিশোধিত মাস:</strong> ${paidMonthsText}</p>
+        <p style="color:var(--danger)"><strong>মোট বকেয়া:</strong> ${dueAmount} টাকা</p>
+        <p><strong>বকেয়া মাসসমূহ:</strong> ${dueMonthsText || 'নেই'}</p>
+    `;
+    document.getElementById('statementModal').style.display = 'flex';
+  }
+
+  function closeModal() { document.getElementById('statementModal').style.display = 'none'; }
+
+  function shareStatement() {
+    if(navigator.share) {
+        navigator.share({ title: 'ফি স্টেটমেন্ট', text: lastStatementText }).catch(console.error);
+    } else {
+        navigator.clipboard.writeText(lastStatementText);
+        alert("স্টেটমেন্ট কপি হয়েছে! আপনার বন্ধুর হোয়াটসএপ বা মেসেঞ্জারে পেস্ট করে দিন।");
+    }
+  }
+
+  // অফলাইন ডাটা ব্যাকআপ ডাউনলোড (JSON ফরম্যাট)
+  function exportData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentProfiles));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `Backup_Students_Data_${new Date().toLocaleDateString()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  }
+
+  // অফলাইন ব্যাকআপ ফাইল রিস্টোর
+  function importData(e) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        try {
+            const importedData = JSON.parse(event.target.result);
+            if(Array.isArray(importedData)) {
+                studentProfiles = importedData;
+                localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
+                renderMainTable();
+                autoSaveToCloud();
+                alert("ডাটা সফলভাবে রিস্টোর হয়েছে!");
+            } else { alert("ভুল ফাইল ফরম্যাট!"); }
+        } catch(err) { alert("ফাইলটি রীড করতে সমস্যা হয়েছে!"); }
+    };
+    reader.readAsText(e.target.files[0]);
+  }
+
   renderMainTable();
 </script>
 
