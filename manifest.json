@@ -1,0 +1,16 @@
+{
+  "name": "ইনস্টিটিউট ফি ও পেমেন্ট লেজার",
+  "short_name": "ফি ম্যানেজার",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#764ba2",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2942/2942261.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
