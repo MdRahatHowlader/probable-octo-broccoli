@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ইনস্টিটিউট ফি ম্যানেজার (ক্লিন ডেট মোড - v8.0)</title>
+    <title>ইনস্টিটিউট ফি ম্যানেজার (ক্লিন ডেট মোড)</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -106,7 +106,6 @@
         .summary {
             display: flex; justify-content: space-between; background: #ecf0f1; padding: 15px;
             border-radius: 5px; margin-bottom: 20px; font-weight: bold; color: #34495e; flex-wrap: wrap; gap: 10px;
-            align-items: center;
         }
         .table-responsive { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 1050px; }
@@ -123,7 +122,7 @@
         .table-input { padding: 8px; min-width: 110px; font-size: 14px; }
         .table-btn { padding: 8px 15px; font-size: 13px; background-color: #2ecc71; color: white; }
         .table-btn:hover { background-color: #27ae60; }
-        .delete-btn { background-color: #c0392b; padding: 6px 12px; font-size: 13px; color: white; }
+        .delete-btn { background-color: #c0392b; padding: 6px 12px; font-size: 13px; }
         .delete-btn:hover { background-color: #962d22; }
         .view-link { color: #3498db; font-weight: bold; cursor: pointer; text-decoration: underline; }
         .view-link:hover { color: #1f618d; }
@@ -134,27 +133,13 @@
         
         .page-view { display: none; }
         .page-view.active-page { display: block; }
-
-        /* v8.0 এর জন্য নতুন এক্সপোর্ট বাটন ও রিসিট স্টাইল */
-        .btn-export { background-color: #27ae60; font-size: 14px; padding: 10px 15px; }
-        .btn-export:hover { background-color: #219653; }
-        .receipt-link { color: #16a085; font-weight: bold; cursor: pointer; text-decoration: underline; font-size: 12px; display: block; margin-top: 4px; }
-        .receipt-link:hover { color: #117a65; }
-        .clickable-name { color: #2c3e50; cursor: pointer; text-decoration: none; }
-        .clickable-name:hover { color: #3498db; text-decoration: underline; }
-
-        /* ইন্ডিভিজুয়াল লেজার মোডাল */
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: white; margin: 10% auto; padding: 25px; border-radius: 8px; max-width: 600px; width: 90%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); position: relative; }
-        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #7f8c8d; }
-        .close-modal:hover { color: #333; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>👨‍🏫 ইনস্টিটিউট ফি ও পেমেন্ট লেজার সিস্টেম</h2>
-    <p style="text-align:center; color:#7f8c8d; margin-top:0; margin-bottom:20px;">ভার্সন ৮.০ (পরিমার্জিত ক্লিন ডেট ও অ্যাডভান্সড লেজার মোড)</p>
+    <p style="text-align:center; color:#7f8c8d; margin-top:0; margin-bottom:20px;">ভার্সন ৫.২ (পরিমার্জিত ক্লিন ডেট ও ফাস্ট-ক্লিক মোড)</p>
     
     <div class="navbar">
         <button id="navMain" class="nav-btn active-nav" onclick="switchPage('main')">🏠 হোম ও পেমেন্ট এন্ট্রি</button>
@@ -207,7 +192,6 @@
             <div>চলতি মাসে পরিশোধ করেছে: <span id="currentMonthPaidCount">০</span> জন</div>
             <div>চলতি মাসে বকেয়া আছে: <span id="currentMonthDueCount">০</span> জন</div>
             <div>সর্বমোট কালেকশন: <span id="totalCollection">০</span> টাকা</div>
-            <button class="btn-export" onclick="exportToCSV()">📊 ডাটা ব্যাকআপ (CSV)</button>
         </div>
 
         <input type="text" id="searchInput" class="search-box" placeholder="এখানে নাম বা রোল নাম্বার লিখে কুইক সার্চ করুন...">
@@ -235,7 +219,8 @@
                         <th>অ্যাকশন</th>
                     </tr>
                 </thead>
-                <tbody id="studentTableBody"></tbody>
+                <tbody id="studentTableBody">
+                </tbody>
             </table>
         </div>
     </div>
@@ -249,7 +234,7 @@
         <input type="text" id="historySearchInput" class="search-box" style="border-color: #16a085;" placeholder="হিস্ট্রি পেজে স্টুডেন্টের নাম বা রোল লিখে স্টেটমেন্ট ফিল্টার করুন...">
 
         <div class="table-responsive">
-            <table class="history-table">
+            <table>
                 <thead>
                     <tr>
                         <th>পরিশোধের তারিখ ও বার</th>
@@ -261,18 +246,12 @@
                         <th>অ্যাকশন</th>
                     </tr>
                 </thead>
-                <tbody id="historyTableBody"></tbody>
+                <tbody id="historyTableBody">
+                </tbody>
             </table>
         </div>
     </div>
-</div>
 
-<div id="ledgerModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeLedger()">&times;</span>
-        <h3 id="modalStudentTitle" style="color: #16a085;">...</h3>
-        <div id="modalLedgerContent" style="margin-top: 15px; max-height: 350px; overflow-y: auto;"></div>
-    </div>
 </div>
 
 <script>
@@ -296,20 +275,27 @@
         return number.toString().split('').map(d => bDigits[d] || d).join('');
     }
 
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+            return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '=': '&#x3D;'}[s];
+        });
+    }
+
     function getBengaliDateString() {
         const now = new Date();
         const date = now.getDate();
         const month = bengaliMonths[now.getMonth()];
         const year = now.getFullYear();
         const day = bengaliDays[now.getDay()];
+        
         return `📅 ${convertToBengali(date)} ${month} ${convertToBengali(year)}, ${day}`;
     }
 
     function getDueMonthsInfo(student) {
-        if (!student.history) student.history = [];
         const adminMonthIdx = bengaliMonths.indexOf(student.admissionMonth);
         let missingMonths = [];
 
+        // যদি ভর্তির মাস খুঁজে না পাওয়া যায়
         if (adminMonthIdx === -1) return missingMonths;
 
         for (let i = adminMonthIdx; i <= currentMonthIndex; i++) {
@@ -352,7 +338,7 @@
             return;
         }
 
-        const isDuplicate = studentProfiles.some(s => s.class === sClass && s.roll.toLowerCase() === roll.toLowerCase());
+        const isDuplicate = studentProfiles.some(s => s.class === sClass && s.roll.trim().toLowerCase() === roll.toLowerCase());
         if (isDuplicate) {
             alert(`দুঃখিত! এই ${sClass}-এ রোল নাম্বার ${roll} ইতিমধ্যে বিদ্যমান।`);
             return;
@@ -387,8 +373,6 @@
         }
 
         const student = studentProfiles.find(s => s.id === studentId);
-        if (!student) return;
-        if (!student.history) student.history = [];
         
         const adminIdx = bengaliMonths.indexOf(student.admissionMonth);
         const selectIdx = bengaliMonths.indexOf(selectedMonth);
@@ -412,103 +396,15 @@
         });
         
         saveAndReload();
-        
-        // ওয়ান-ক্লিক পেমেন্টের পর অটো রিসিট প্রিন্ট অপশন (v8.0)
-        if(confirm('বেতন জমা হয়েছে। আপনি কি মানি রিসিপ্ট প্রিন্ট করতে চান?')) {
-            printReceipt(student, selectedMonth, student.fixedFee, dateString);
-        }
-    }
-
-    // v8.0 রিসিট প্রিন্ট ইঞ্জিন
-    function printReceipt(student, month, amount, date) {
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write(`
-            <html>
-            <head><title>মানি রিসিপ্ট</title></head>
-            <body style="font-family:'Segoe UI', sans-serif; padding:20px; color:#333;" onload="window.print(); window.close();">
-                <div style="border:2px dashed #34495e; padding:20px; max-width:350px; margin:0 auto; border-radius:5px;">
-                    <h2 style="text-align:center; margin-top:0; color:#2c3e50;">ইনস্টিটিউট ফি রিসিট</h2>
-                    <hr style="border:1px dashed #ddd;">
-                    <p><strong>ছাত্রের নাম:</strong> ${student.name}</p>
-                    <p><strong>রোল নং:</strong> ${student.roll} | <strong>ক্লাস:</strong> ${student.class}</p>
-                    <p><strong>বেতনের মাস:</strong> ${month}</p>
-                    <p><strong>টাকার পরিমাণ:</strong> ${convertToBengali(amount)}৳ (পরিশোধিত)</p>
-                    <p style="font-size:12px; color:#7f8c8d;">${date}</p>
-                    <hr style="border:1px dashed #ddd;">
-                    <p style="text-align:center; font-weight:bold; color:#2ecc71;">পেমেন্ট সফল হয়েছে, ধন্যবাদ!</p>
-                </div>
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-    }
-
-    // v8.0 ইন্ডিভিজুয়াল লেজার শো (নামের ওপর ক্লিক করলে কাজ করবে)
-    function openLedger(studentId) {
-        const student = studentProfiles.find(s => s.id === studentId);
-        if(!student) return;
-        
-        document.getElementById('modalStudentTitle').innerText = `📊 ${student.name} - বিস্তারিত পেমেন্ট লেজার`;
-        const container = document.getElementById('modalLedgerContent');
-        container.innerHTML = '';
-
-        if(!student.history || student.history.length === 0) {
-            container.innerHTML = '<p style="color:#7f8c8d; text-align:center;">এখনো কোনো পেমেন্ট রেকর্ড নেই।</p>';
-        } else {
-            const ul = document.createElement('ul');
-            ul.style.listStyleType = 'none';
-            ul.style.padding = '0';
-            student.history.forEach(log => {
-                const li = document.createElement('li');
-                li.style.padding = '10px';
-                li.style.borderBottom = '1px solid #eee';
-                li.style.display = 'flex';
-                li.style.justifyContent = 'space-between';
-                li.innerHTML = `<span>📅 <b>${log.month}:</b> ${convertToBengali(log.amount)}৳</span> <span style="font-size:11px; color:#7f8c8d;">${log.date}</span>`;
-                ul.appendChild(li);
-            });
-            container.appendChild(ul);
-        }
-        document.getElementById('ledgerModal').style.display = 'block';
-    }
-
-    function closeLedger() {
-        document.getElementById('ledgerModal').style.display = 'none';
-    }
-
-    // v8.0 CSV ব্যাকআপ এক্সপোর্ট
-    function exportToCSV() {
-        if(studentProfiles.length === 0) {
-            alert('এক্সপোর্ট করার মতো কোনো ডাটা নেই!');
-            return;
-        }
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Name,Roll,Class,Admission Month,Fixed Fee,Total Paid\n";
-        
-        studentProfiles.forEach(s => {
-            let totalPaid = 0;
-            s.history.forEach(h => totalPaid += h.amount);
-            csvContent += `"${s.name}","${s.roll}","${s.class}","${s.admissionMonth}",${s.fixedFee},${totalPaid}\n`;
-        });
-
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Institute_Students_Backup_v8.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     }
 
     function deleteHistoryItem(studentId, monthName) {
         if(confirm(`আপনি কি এই স্টুডেন্টের ${monthName} মাসের পেমেন্ট রেকর্ডটি ডিলিট করতে চান?`)) {
             const student = studentProfiles.find(s => s.id === studentId);
-            if (student && student.history) {
-                student.history = student.history.filter(h => h.month !== monthName);
-                localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
-                renderHistoryTable();
-                renderMainTable();
-            }
+            student.history = student.history.filter(h => h.month !== monthName);
+            localStorage.setItem('admissionTrackStudents', JSON.stringify(studentProfiles));
+            renderHistoryTable();
+            renderMainTable();
         }
     }
 
@@ -534,7 +430,6 @@
 
     function renderMainTable() {
         const tableBody = document.getElementById('studentTableBody');
-        if(!tableBody) return;
         tableBody.innerHTML = '';
 
         const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -544,12 +439,7 @@
         let currentDueCount = 0;
 
         studentProfiles.forEach(s => {
-            if (!s.history) s.history = [];
-            if (s.history.some(h => h.month === currentMonth)) { 
-                currentPaidCount++; 
-            } else { 
-                currentDueCount++; 
-            }
+            if (s.history.some(h => h.month === currentMonth)) { currentPaidCount++; } else { currentDueCount++; }
             s.history.forEach(h => { totalAllCollection += h.amount; });
         });
 
@@ -557,6 +447,7 @@
             return student.name.toLowerCase().includes(searchQuery) || student.roll.toLowerCase().includes(searchQuery);
         });
 
+        // সর্টিং: যাদের বকেয়া মাস বেশি তারা সবসময় তালিকার উপরে থাকবে
         filteredStudents.sort((a, b) => {
             return getDueMonthsInfo(b).length - getDueMonthsInfo(a).length;
         });
@@ -579,19 +470,21 @@
 
             const dueMonthsList = getDueMonthsInfo(student);
             let dueMonthsDetailsHtml = '';
-            
+            let targetSelectMonth = currentMonth; // বাই ডিফল্ট কারেন্ট মাস সিলেক্টেড থাকবে
+
             if (dueMonthsList.length > 0) {
                 dueMonthsDetailsHtml = `<span class="due-months-list">🚨 ${convertToBengali(dueMonthsList.length)} মাস বাকি (${dueMonthsList.join(', ')})</span>`;
+                targetSelectMonth = dueMonthsList[0]; // বকেয়া থাকলে ড্রপডাউনে সবচেয়ে পুরোনো বকেয়া মাসটি অটো-সিলেক্ট হবে (ফাস্ট পেমেন্ট এন্ট্রি)
             } else {
                 dueMonthsDetailsHtml = `<span class="all-paid-text">✅ সব পরিশোধিত</span>`;
             }
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><strong class="clickable-name" onclick="openLedger('${student.id}')" title="ইন্ডিভিজুয়াল লেজার দেখতে ক্লিক করুন">👤 ${student.name}</strong></td>
-                <td>${student.roll}</td>
-                <td>${student.class}</td>
-                <td style="color:#16a085; font-weight:bold;">${student.admissionMonth}</td>
+                <td><strong>${escapeHtml(student.name)}</strong></td>
+                <td>${escapeHtml(student.roll)}</td>
+                <td>${escapeHtml(student.class)}</td>
+                <td style="color:#16a085; font-weight:bold;">${escapeHtml(student.admissionMonth)}</td>
                 <td><strong>${convertToBengali(student.fixedFee)}৳</strong></td>
                 <td>${statusBadgeHtml}</td>
                 <td>${dueMonthsDetailsHtml}</td>
@@ -599,13 +492,13 @@
                     <div style="display:flex; gap:5px;">
                         <select id="month-${student.id}" class="table-input">
                             <option value="" disabled>মাস</option>
-                            ${bengaliMonths.map(m => `<option value="${m}" ${m === currentMonth ? 'selected' : ''}>${m}</option>`).join('')}
+                            ${bengaliMonths.map(m => `<option value="${m}" ${m === targetSelectMonth ? 'selected' : ''}>${m}</option>`).join('')}
                         </select>
                         <button class="table-btn" onclick="payMonthlyFee('${student.id}')">জমা দিন</button>
                     </div>
                 </td>
                 <td>
-                    <span class="view-link" onclick="switchPage('history', '${student.name}')">হিস্ট্রি 📜</span>
+                    <span class="view-link" onclick="switchPage('history', '${escapeHtml(student.name)}')">হিস্ট্রি 📜</span>
                 </td>
                 <td>
                     <button class="delete-btn" onclick="deleteStudent('${student.id}')">ডিলিট</button>
@@ -622,23 +515,21 @@
 
     function renderHistoryTable() {
         const historyTableBody = document.getElementById('historyTableBody');
-        if(!historyTableBody) return;
         historyTableBody.innerHTML = '';
 
         const historySearchQuery = document.getElementById('historySearchInput').value.toLowerCase().trim();
         let allPaymentLogs = [];
 
         studentProfiles.forEach(student => {
-            if (!student.history) student.history = [];
-            student.history.forEach((log, index) => {
+            student.history.forEach(log => {
                 allPaymentLogs.push({
                     studentId: student.id, name: student.name, roll: student.roll, class: student.class,
-                    month: log.month, amount: log.amount, date: log.date || 'রেকর্ড পাওয়া যায়নি',
-                    studentObj: student, logObj: log
+                    month: log.month, amount: log.amount, date: log.date || 'রেকর্ড পাওয়া যায়নি'
                 });
             });
         });
 
+        // নতুন পেমেন্ট লগগুলো একদম উপরে দেখানোর জন্য রিভার্স করা হয়েছে
         allPaymentLogs.reverse();
 
         let filteredLogs = allPaymentLogs.filter(log => {
@@ -653,17 +544,14 @@
         filteredLogs.forEach(log => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><strong>${log.date}</strong></td>
-                <td><strong>${log.name}</strong></td>
-                <td>${log.roll}</td>
-                <td>${log.class}</td>
-                <td>
-                    <span style="background:#e8f8f5; padding:4px 8px; border-radius:4px; font-weight:bold; color:#117a65;">${log.month}</span>
-                    <span class="receipt-link" onclick='printReceipt(${JSON.stringify(log.studentObj)}, "${log.month}", ${log.amount}, "${log.date}")'>🖨️ প্রিন্ট রিসিট</span>
-                </td>
+                <td><strong>${escapeHtml(log.date)}</strong></td>
+                <td><strong>${escapeHtml(log.name)}</strong></td>
+                <td>${escapeHtml(log.roll)}</td>
+                <td>${escapeHtml(log.class)}</td>
+                <td><span style="background:#e8f8f5; padding:4px 8px; border-radius:4px; font-weight:bold; color:#117a65;">${escapeHtml(log.month)}</span></td>
                 <td><strong style="color:#27ae60;">${convertToBengali(log.amount)}৳</strong></td>
                 <td>
-                    <span style="color:#c0392b; cursor:pointer; font-weight:bold; text-decoration:underline;" onclick="deleteHistoryItem('${log.studentId}', '${log.month}')">ডিলিট লগ</span>
+                    <span style="color:#c0392b; cursor:pointer; font-weight:bold; text-decoration:underline;" onclick="deleteHistoryItem('${log.studentId}', '${escapeHtml(log.month)}')">ডিলিট লগ</span>
                 </td>
             `;
             historyTableBody.appendChild(row);
@@ -673,11 +561,7 @@
     document.getElementById('searchInput').addEventListener('input', renderMainTable);
     document.getElementById('historySearchInput').addEventListener('input', renderHistoryTable);
 
-    window.onclick = function(event) {
-        const modal = document.getElementById('ledgerModal');
-        if (event.target == modal) { modal.style.display = 'none'; }
-    }
-
+    // প্রথমবার রেন্ডার করার জন্য
     renderMainTable();
 </script>
 
